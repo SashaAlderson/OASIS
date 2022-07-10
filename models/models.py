@@ -29,7 +29,7 @@ class OASIS_model(nn.Module):
             if opt.add_vgg_loss:
                 self.VGG_loss = losses.VGGLoss(self.opt.gpu_ids)
 
-    def forward(self, image, label, mode, losses_computer):
+    def forward(self, image, label, mode, losses_computer, z = None):
         # Branching is applied to be compatible with DataParallel
         if mode == "losses_G":
             loss_G = 0
@@ -67,9 +67,9 @@ class OASIS_model(nn.Module):
         if mode == "generate":
             with torch.no_grad():
                 if self.opt.no_EMA:
-                    fake = self.netG(label)
+                    fake = self.netG(label, z)
                 else:
-                    fake = self.netEMA(label)
+                    fake = self.netEMA(label, z)
             return fake
 
     def load_checkpoints(self):

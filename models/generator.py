@@ -32,11 +32,15 @@ class OASIS_Generator(nn.Module):
         if self.opt.gpu_ids != "-1":
             seg.cuda()
         if not self.opt.no_3dnoise:
-            dev = seg.get_device() if self.opt.gpu_ids != "-1" else "cpu"
-            z = torch.randn(seg.size(0), self.opt.z_dim, dtype=torch.float32, device=dev)
-            z = z.view(z.size(0), self.opt.z_dim, 1, 1)
-            z = z.expand(z.size(0), self.opt.z_dim, seg.size(2), seg.size(3))
-            seg = torch.cat((z, seg), dim = 1)
+            if z == None:
+                dev = seg.get_device() if self.opt.gpu_ids != "-1" else "cpu"
+                z = torch.randn(seg.size(0), self.opt.z_dim, dtype=torch.float32, device=dev)
+                z = z.view(z.size(0), self.opt.z_dim, 1, 1)
+                z = z.expand(z.size(0), self.opt.z_dim, seg.size(2), seg.size(3))
+                seg = torch.cat((z, seg), dim = 1)
+            else:
+                seg = torch.cat((z, seg), dim = 1)
+            
         x = F.interpolate(seg, size=(self.init_W, self.init_H))
         x = self.fc(x)
         for i in range(self.opt.num_res_blocks):

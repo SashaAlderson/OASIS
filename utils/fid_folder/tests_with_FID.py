@@ -52,7 +52,8 @@ except ImportError:
     # If not tqdm is not available, provide a mock version of it
     def tqdm(x): return x
 
-from util.fid_checks.inception import InceptionV3
+#from utils.fid_folder.inception import InceptionV3
+from inception import InceptionV3
 
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 parser.add_argument('path', type=str, nargs=2,
@@ -267,8 +268,8 @@ if __name__ == '__main__':
     #args = parser.parse_args()
     #os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
 
-    path1 = "./validation_data/"
-    path2 = "./generated_data/"
+    path1 = "/home/alexander/GAN/OASIS/data/ADEChallengeData2016/images/validation/"
+    path2 = "/home/alexander/GAN/OASIS/results/oasis_ade20k_pretrained/best/image/"
     batch_size = 50
     dims = 2048
 

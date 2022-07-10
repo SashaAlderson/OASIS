@@ -18,7 +18,8 @@ image_saver = utils.results_saver(opt)
 model = models.OASIS_model(opt)
 model = models.put_on_multi_gpus(model, opt)
 model.eval()
-
+print(opt)
+print(type(opt))
 #--- iterate over validation set ---#
 for i, data_i in enumerate(dataloader_val):
     _, label = models.preprocess_input(opt, data_i)
