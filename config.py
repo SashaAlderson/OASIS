@@ -23,26 +23,6 @@ def read_arguments(train=True):
         save_options(opt, parser)
     return opt
 
-def read_arguments_1(arguments, train=True):
-    parser = argparse.ArgumentParser()
-    parser = add_all_arguments(parser, train)
-    parser.add_argument('--phase', type=str, default='train')
-    opt = parser.parse_args(arguments)
-    if train:
-        set_dataset_default_lm(opt, parser)
-        if opt.continue_train:
-            update_options_from_file(opt, parser)
-    opt = parser.parse_args()
-    opt.phase = 'train' if train else 'test'
-    if train:
-        opt.loaded_latest_iter = 0 if not opt.continue_train else load_iter(opt)
-    utils.fix_seed(opt.seed)
-    print_options(opt, parser)
-    if train:
-        save_options(opt, parser)
-    return opt
-
-
 def add_all_arguments(parser, train):
     #--- general options ---
     parser.add_argument('--name', type=str, default='label2coco', help='name of the experiment. It decides where to store samples and models')
